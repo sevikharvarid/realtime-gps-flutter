@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:realtime_gps/fire_auth.dart';
-import 'package:realtime_gps/map_screen.dart';
+import 'package:realtime_gps/admin/register_admin.dart';
+import 'package:realtime_gps/user/register_user.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key? key}) : super(key: key);
@@ -13,141 +10,124 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  bool isLoading = false;
-  TextEditingController email = TextEditingController();
-  TextEditingController nama = TextEditingController();
-  TextEditingController password = TextEditingController();
-
-  FireAuth fireAuth = FireAuth();
-  Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
-    return firebaseApp;
-  }
+  List<Widget> _listPage = [
+    RegisterAdminScreen(),
+    RegisterUserScreen(),
+  ];
+  PageController _pageController = PageController();
+  int currentIndex = 0;
+  int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _initializeFirebase();
-  }
-
-  void clearText() {
-    email.clear();
-    nama.clear();
-    password.clear();
+    _pageController = PageController(initialPage: 0, keepPage: true);
+    print("${_pageController.initialPage}");
   }
 
   @override
   void dispose() {
-    email.dispose();
-    nama.dispose();
-    password.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.green,
+        ),
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        reverse: false,
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: TextFormField(
-                controller: email,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
+          child: ConstrainedBox(
+        constraints:
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              headerButton(),
+              SizedBox(
+                height: 25,
               ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: TextFormField(
-                controller: nama,
-                decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.person)),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: TextFormField(
-                controller: password,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            GestureDetector(
-              onTap: () {
-                print("Register Success");
-                setState(() {
-                  isLoading = true;
-                });
-                FireAuth.registerUsingEmailPassword(
-                        name: nama.text,
-                        email: email.text,
-                        password: password.text)
-                    .then((value) {
-                  if (value != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Silahkan verifikasi email anda !")));
-                    isLoading = false;
-                    Future.delayed(Duration(seconds: 1), () {
-                      clearText();
-                      value.sendEmailVerification();
-                      Navigator.pop(context);
-                    });
-                  }
-                });
-              },
-              child: Container(
-                height: 50,
-                margin: EdgeInsets.all(20),
-                child: Card(
-                    color: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Center(
-                        child: isLoading == true
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Text(
-                                "REGISTER",
-                                style: TextStyle(color: Colors.white),
-                              ))),
-              ),
-            ),
-          ],
+              Expanded(
+                child: PageView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (value) {
+                      print("PAGE KE : $value");
+                      setState(() {
+                        selectedIndex = value;
+                      });
+                    },
+                    controller: _pageController,
+                    itemCount: _listPage.length,
+                    itemBuilder: (context, index) {
+                      return _listPage[index];
+                    }),
+              )
+            ],
+          ),
         ),
       )),
+    );
+  }
+
+  Widget headerButton() {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TextButton(
+            style: TextButton.styleFrom(
+                backgroundColor:
+                    selectedIndex == 0 ? Colors.green : Colors.transparent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    side: BorderSide(color: Colors.green))),
+            onPressed: () {
+              _pageController.previousPage(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeInOut);
+            },
+            child: Text(
+              "Admin",
+              style: TextStyle(
+                color: selectedIndex == 0 ? Colors.white : Colors.green,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+                backgroundColor:
+                    selectedIndex == 1 ? Colors.green : Colors.transparent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    side: BorderSide(color: Colors.green))),
+            onPressed: () {
+              _pageController.nextPage(
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeInOut);
+            },
+            child: Text(
+              "User",
+              style: TextStyle(
+                color: selectedIndex == 1 ? Colors.white : Colors.green,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

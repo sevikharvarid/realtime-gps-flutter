@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:realtime_gps/login.dart';
+import 'package:flutter/services.dart';
+import 'package:realtime_gps/admin/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const MyApp());
 }
 
