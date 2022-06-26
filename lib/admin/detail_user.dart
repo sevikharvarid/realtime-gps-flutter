@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maps_launcher/maps_launcher.dart';
 import 'package:realtime_gps/maps_launch.dart';
 
 class DetailUsers extends StatefulWidget {
@@ -18,7 +17,7 @@ class _DetailUsersState extends State<DetailUsers> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("Detail User"),
+        title: const Text("Detail User"),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -72,7 +71,10 @@ class _DetailUsersState extends State<DetailUsers> {
                 ),
                 IconButton(
                     onPressed: () {
-                      MapUtils.openMap(-31.000, 55.588585);
+                      MapUtils.openMap(
+                        widget.dataSnapshot.child("lat").value.toString(),
+                        widget.dataSnapshot.child("lng").value.toString(),
+                      );
                     },
                     icon: const Icon(Icons.share_location))
               ],
