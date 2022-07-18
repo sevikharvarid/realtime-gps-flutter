@@ -23,11 +23,6 @@ class _ListUserState extends State<ListUser> {
   List<Map<dynamic, dynamic>> lists = [];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
