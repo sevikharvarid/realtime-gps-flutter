@@ -12,6 +12,8 @@ class DetailUsers extends StatefulWidget {
 }
 
 class _DetailUsersState extends State<DetailUsers> {
+  bool? stateNotif = false;
+  final databaseReference = FirebaseDatabase.instance.reference().child("user");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +68,24 @@ class _DetailUsersState extends State<DetailUsers> {
                     widget.dataSnapshot.child('username').value.toString()),
                 builderColumn("Email Pengguna",
                     widget.dataSnapshot.child('email').value.toString()),
+                const SizedBox(
+                  height: 20,
+                ),
+                IconButton(
+                    onPressed: () {
+                      databaseReference
+                          .child(widget.dataSnapshot.key.toString())
+                          .update({"notify": "true"});
+                      stateNotif = true;
+                      if (stateNotif == true) {}
+                      Future.delayed(Duration(seconds: 2), () {
+                        databaseReference
+                            .child(widget.dataSnapshot.key.toString())
+                            .update({"notify": "false"});
+                      });
+                      print("Notify Success !");
+                    },
+                    icon: const Icon(Icons.notification_add)),
                 const SizedBox(
                   height: 20,
                 ),

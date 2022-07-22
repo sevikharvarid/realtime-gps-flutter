@@ -18,6 +18,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen>
   TextEditingController kode = TextEditingController();
   TextEditingController nickname = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
   final databaseReference = FirebaseDatabase.instance.reference().child("user");
 
@@ -47,12 +49,14 @@ class _RegisterUserScreenState extends State<RegisterUserScreen>
     super.dispose();
   }
 
-  void createData(userId, email, nama, username) {
+  void createData(userId, email, nama, username, alamat, no) {
     databaseReference.child(userId).set({
       'type': 'user',
       'email': email,
       'nama': nama,
       'username': username,
+      'address': alamat,
+      'phone': no,
     });
   }
 
@@ -83,7 +87,33 @@ class _RegisterUserScreenState extends State<RegisterUserScreen>
           child: TextFormField(
             controller: nickname,
             decoration: const InputDecoration(
-              labelText: 'Nama',
+              labelText: 'Username',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20, right: 20),
+          child: TextFormField(
+            controller: address,
+            decoration: const InputDecoration(
+              labelText: 'Alamat',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20, right: 20),
+          child: TextFormField(
+            controller: phone,
+            decoration: const InputDecoration(
+              labelText: 'No. Hp',
               border: OutlineInputBorder(),
             ),
           ),
@@ -96,7 +126,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen>
           child: TextFormField(
             controller: nama,
             decoration: const InputDecoration(
-                labelText: 'Username',
+                labelText: 'Nama',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.person)),
           ),
@@ -130,7 +160,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen>
                     name: nama.text, email: email.text, password: password.text)
                 .then((value) {
               if (value != null) {
-                createData(value.uid, value.email, nickname.text, nama.text);
+                createData(value.uid, value.email, nickname.text, nama.text,
+                    address.text, phone.text);
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Register User Berhasil !")));
                 isLoading = false;

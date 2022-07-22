@@ -15,15 +15,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePageScreen extends StatefulWidget {
   final String? uid;
-  const HomePageScreen({Key? key, this.uid}) : super(key: key);
+  final String? name;
+  final String? address;
+  final String? phone;
+  const HomePageScreen(
+      {Key? key, this.uid, this.name, this.address, this.phone})
+      : super(key: key);
   @override
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
+  TextEditingController _name = TextEditingController();
+  TextEditingController _address = TextEditingController();
+  TextEditingController _phone = TextEditingController();
   SharedPreferences? prefs;
   String? emailStorage;
-  Widget textfield({@required hintText}) {
+  Widget textfield(hintText, TextEditingController _controller) {
     return Material(
       elevation: 4,
       shadowColor: Colors.green,
@@ -31,6 +39,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextField(
+        controller: _controller,
         decoration: InputDecoration(
             hintText: hintText,
             hintStyle: const TextStyle(
@@ -76,7 +85,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     return File(imagePath).copy(image.path);
   }
 
-  Future uploadPic(BuildContext context) async {
+  Future uploadData(BuildContext context) async {
     String fileName = basename(imagePath);
     FirebaseStorage firebaseStorageRef = FirebaseStorage.instance;
     Reference ref = firebaseStorageRef.ref().child(fileName);
@@ -135,7 +144,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Harap isi foto Profile !")));
           } else {
-            uploadPic(context);
+            uploadData(context);
           }
         },
       ),
@@ -175,15 +184,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    textfield(
-                      hintText: 'Name',
-                    ),
-                    textfield(
-                      hintText: 'Address',
-                    ),
-                    textfield(
-                      hintText: 'Phone',
-                    ),
+                    textfield(widget.name, _name),
+                    textfield(widget.address, _address),
+                    textfield(widget.phone, _phone),
                   ],
                 ),
               )

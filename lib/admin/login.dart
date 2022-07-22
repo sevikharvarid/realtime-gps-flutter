@@ -53,6 +53,9 @@ class _LoginScreenState extends State<LoginScreen>
             CupertinoPageRoute(
                 builder: (_) => HomePageScreen(
                       uid: uid.toString(),
+                      name: data['nama'],
+                      address: data['address'],
+                      phone: data['phone'],
                     )));
       } catch (e) {
         Navigator.push(context, CupertinoPageRoute(builder: (_) => ListUser()));
@@ -94,6 +97,18 @@ class _LoginScreenState extends State<LoginScreen>
       print("LANJUT DASHBOARD ! ");
       email.text = 'adjgladkjglj';
       // checkTypeLoginUser(uid);
+    }
+    User? user;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    user = auth.currentUser;
+    String? uids = prefs!.getString("uid");
+    if (user != null) {
+      // navigate to home page
+      print("masih login");
+      checkTypeLoginUser(uids);
+    } else {
+// log in
+      print("sudah logout");
     }
   }
 
