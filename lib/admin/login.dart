@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen>
     print(newUser);
     if (newUser == false) {
       print("LANJUT DASHBOARD ! ");
-      email.text = 'adjgladkjglj';
+      email.text = '';
       // checkTypeLoginUser(uid);
     }
     User? user;
