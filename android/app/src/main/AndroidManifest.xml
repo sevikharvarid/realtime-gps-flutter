@@ -11,9 +11,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
    <application
-        android:label="realtime_gps"
+        android:label="Yasin Care"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher2">
         <activity
             android:name=".MainActivity"
             android:exported="true"
