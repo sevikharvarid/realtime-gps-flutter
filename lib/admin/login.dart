@@ -113,6 +113,8 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  bool islock = false;
+
   @override
   void initState() {
     super.initState();
@@ -173,6 +175,7 @@ class _LoginScreenState extends State<LoginScreen>
                       Container(
                         margin: const EdgeInsets.all(20),
                         child: TextFormField(
+                          obscureText: islock ? true : false,
                           validator: (value) =>
                               Validator.validatePassword(password: value!),
                           controller: password,
@@ -180,7 +183,16 @@ class _LoginScreenState extends State<LoginScreen>
                               labelText: 'Password',
                               labelStyle: GoogleFonts.poppins(),
                               border: OutlineInputBorder(),
-                              suffixIcon: Icon(Icons.password)),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    islock = !islock;
+                                  });
+                                },
+                                icon: islock
+                                    ? Icon(Icons.lock_open)
+                                    : Icon(Icons.lock),
+                              )),
                         ),
                       ),
                       const SizedBox(
@@ -189,7 +201,9 @@ class _LoginScreenState extends State<LoginScreen>
                       GestureDetector(
                         onTap: () async {
                           // saveToStorage(email.text, password.text);
-                          isLoading = true;
+                          setState(() {
+                            isLoading = true;
+                          });
                           if (_formKey.currentState!.validate()) {
                             User? user =
                                 await FireAuth.signInUsingEmailPassword(
@@ -203,7 +217,13 @@ class _LoginScreenState extends State<LoginScreen>
                               checkTypeLoginUser(value.uid);
                               clearText();
                             });
-                            isLoading = false;
+                            setState(() {
+                              isLoading = false;
+                            });
+                          } else {
+                            setState(() {
+                              isLoading = false;
+                            });
                           }
                         },
                         child: Container(
