@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:realtime_gps/admin/list_user.dart';
-import 'package:realtime_gps/map_screen.dart';
 import 'package:realtime_gps/admin/register_admin.dart';
 import 'package:realtime_gps/register.dart';
 import 'package:realtime_gps/user/home_page.dart';
@@ -46,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen>
   void checkTypeLoginUser(uid) {
     databaseReference.child(uid).once().then((values) {
       try {
+        //page buat user
         final data = Map<String, dynamic>.from(
             values.snapshot.value as Map<dynamic, dynamic>);
         Navigator.push(
@@ -59,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen>
                     )));
       } catch (e) {
         Navigator.push(context, CupertinoPageRoute(builder: (_) => ListUser()));
+        // page buat admin
       }
     });
   }

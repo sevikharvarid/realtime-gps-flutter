@@ -138,7 +138,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         hoverColor: Colors.grey,
-        child: Icon(Icons.add),
+        child: Text("Update"),
         onPressed: () {
           if (image == null) {
             ScaffoldMessenger.of(context).showSnackBar(
