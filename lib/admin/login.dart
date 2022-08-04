@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-    // Future.delayed(Duration.zero, (() {
+    // Future.delayed(Duration.zero, (() {s
     //   getToStorage();
     // }));
     check_if_already_login();

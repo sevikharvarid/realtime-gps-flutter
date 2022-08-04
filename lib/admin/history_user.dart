@@ -1,19 +1,17 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:realtime_gps/admin/history_user.dart';
 import 'package:realtime_gps/maps_launch.dart';
 
-class DetailUsers extends StatefulWidget {
+class HistoryUsers extends StatefulWidget {
   final DataSnapshot dataSnapshot;
-  const DetailUsers({Key? key, required this.dataSnapshot}) : super(key: key);
+  const HistoryUsers({Key? key, required this.dataSnapshot}) : super(key: key);
 
   @override
-  State<DetailUsers> createState() => _DetailUsersState();
+  State<HistoryUsers> createState() => _HistoryUsersState();
 }
 
-class _DetailUsersState extends State<DetailUsers> {
+class _HistoryUsersState extends State<HistoryUsers> {
   bool? stateNotif = false;
   final databaseReference = FirebaseDatabase.instance.reference().child("user");
   @override
@@ -21,18 +19,7 @@ class _DetailUsersState extends State<DetailUsers> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("Detail User"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (_) =>
-                            HistoryUsers(dataSnapshot: widget.dataSnapshot)));
-              },
-              icon: Icon(Icons.history))
-        ],
+        title: const Text("History User"),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -53,6 +40,23 @@ class _DetailUsersState extends State<DetailUsers> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.panorama_fish_eye_sharp,
+                      size: 15,
+                    ),
+                    Icon(
+                      Icons.panorama_fish_eye_sharp,
+                      size: 15,
+                    ),
+                    Icon(
+                      Icons.panorama_fish_eye_sharp,
+                      size: 15,
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -87,10 +91,10 @@ class _DetailUsersState extends State<DetailUsers> {
                 ),
                 IconButton(
                     onPressed: () {
-                      MapUtils.openMap("-6.372297", "106.822995"
-                          // widget.dataSnapshot.child("lat").value.toString(),
-                          // widget.dataSnapshot.child("lng").value.toString(),
-                          );
+                      MapUtils.openMap(
+                        widget.dataSnapshot.child("lat").value.toString(),
+                        widget.dataSnapshot.child("lng").value.toString(),
+                      );
                     },
                     icon: const Icon(Icons.share_location))
               ],
