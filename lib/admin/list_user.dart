@@ -21,6 +21,7 @@ class _ListUserState extends State<ListUser> {
   final databaseReference = FirebaseDatabase.instance.reference().child("user");
 
   List<Map<dynamic, dynamic>> lists = [];
+  List listTest = [0, 1];
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +63,7 @@ class _ListUserState extends State<ListUser> {
                                 builder: (__) => DetailUsers(
                                       dataSnapshot:
                                           userS.children.toList()[index],
+                                      lists: listTest,
                                     )));
                       },
                       child: Card(

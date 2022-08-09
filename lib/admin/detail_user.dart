@@ -7,7 +7,9 @@ import 'package:realtime_gps/maps_launch.dart';
 
 class DetailUsers extends StatefulWidget {
   final DataSnapshot dataSnapshot;
-  const DetailUsers({Key? key, required this.dataSnapshot}) : super(key: key);
+  final List lists;
+  const DetailUsers({Key? key, required this.dataSnapshot, required this.lists})
+      : super(key: key);
 
   @override
   State<DetailUsers> createState() => _DetailUsersState();
@@ -28,8 +30,10 @@ class _DetailUsersState extends State<DetailUsers> {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                        builder: (_) =>
-                            HistoryUsers(dataSnapshot: widget.dataSnapshot)));
+                        builder: (_) => HistoryUsers(
+                              dataSnapshot: widget.dataSnapshot,
+                              lists: widget.lists,
+                            )));
               },
               icon: Icon(Icons.history))
         ],
