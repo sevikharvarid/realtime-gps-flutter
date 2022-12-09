@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
                 "RANCANG BANGUN\nTONGKAT PINTAR\nBAGI PENYANDANG TUNANETRA\nBERBASIS ANDROID",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Text(
                 "Asya Syahwa Nabila - 1903332007\nSindy Alfiyanih - 1903332026",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         fontSize: 15,
                         color: Colors.white,

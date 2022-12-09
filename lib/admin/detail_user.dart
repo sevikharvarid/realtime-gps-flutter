@@ -1,11 +1,15 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:realtime_gps/admin/history_user.dart';
 import 'package:realtime_gps/maps_launch.dart';
 
 class DetailUsers extends StatefulWidget {
   final DataSnapshot dataSnapshot;
-  const DetailUsers({Key? key, required this.dataSnapshot}) : super(key: key);
+  final List lists;
+  const DetailUsers({Key? key, required this.dataSnapshot, required this.lists})
+      : super(key: key);
 
   @override
   State<DetailUsers> createState() => _DetailUsersState();
@@ -20,6 +24,19 @@ class _DetailUsersState extends State<DetailUsers> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: const Text("Detail User"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (_) => HistoryUsers(
+                              dataSnapshot: widget.dataSnapshot,
+                              lists: widget.lists,
+                            )));
+              },
+              icon: Icon(Icons.history))
+        ],
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -40,23 +57,6 @@ class _DetailUsersState extends State<DetailUsers> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.panorama_fish_eye_sharp,
-                      size: 15,
-                    ),
-                    Icon(
-                      Icons.panorama_fish_eye_sharp,
-                      size: 15,
-                    ),
-                    Icon(
-                      Icons.panorama_fish_eye_sharp,
-                      size: 15,
-                    ),
-                  ],
-                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -91,10 +91,10 @@ class _DetailUsersState extends State<DetailUsers> {
                 ),
                 IconButton(
                     onPressed: () {
-                      MapUtils.openMap(
-                        widget.dataSnapshot.child("lat").value.toString(),
-                        widget.dataSnapshot.child("lng").value.toString(),
-                      );
+                      MapUtils.openMap("-6.372297", "106.822995"
+                          // widget.dataSnapshot.child("lat").value.toString(),
+                          // widget.dataSnapshot.child("lng").value.toString(),
+                          );
                     },
                     icon: const Icon(Icons.share_location))
               ],
